@@ -2,6 +2,7 @@ import {
   getProviderProfile,
   saveProviderProfile,
   getAllProviders,
+  getProviderEarningsStats,
 } from "../services/provider.service.js";
 
 // Get current provider profile
@@ -35,6 +36,18 @@ export const getAllProvidersController = async (req, res) => {
     res.status(200).json({ providers });
   } catch (error) {
     console.error("Error fetching providers:", error);
+    res.status(500).json({ message: error.message || "Internal server error" });
+  }
+};
+
+// ✅ NEW: Get provider's earnings and statistics
+export const getEarningsStatsController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const earnings = await getProviderEarningsStats(userId);
+    res.status(200).json({ earnings });
+  } catch (error) {
+    console.error("Error fetching earnings stats:", error);
     res.status(500).json({ message: error.message || "Internal server error" });
   }
 };

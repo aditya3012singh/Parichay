@@ -11,13 +11,17 @@ export const useIsAuthenticated = () => useAppSelector((state) => state.auth.isA
 
 // Booking Selectors
 export const useBookings = () => useAppSelector((state) => state.booking.bookings);
+export const useBookingsByStatus = () => useAppSelector((state) => state.booking.bookingsByStatus);
 export const useJobs = () => useAppSelector((state) => state.booking.jobs);
+export const useJobsByStatus = () => useAppSelector((state) => state.booking.jobsByStatus);
 export const useCurrentBooking = () => useAppSelector((state) => state.booking.currentBooking);
+export const useProviderEarnings = () => useAppSelector((state) => state.booking.earnings);
 
 // Provider Selectors
 export const useProviderProfile = () => useAppSelector((state) => state.provider.profile);
 export const useProviders = () => useAppSelector((state) => state.provider.providers);
 export const useNearbyProviders = () => useAppSelector((state) => state.provider.nearbyProviders);
+export const useProviderEarningsStats = () => useAppSelector((state) => state.provider.earnings);
 
 // Wallet Selectors
 export const useWalletBalance = () => useAppSelector((state) => state.wallet.balance);

@@ -4,13 +4,15 @@ import {
   getProviderProfile, 
   updateProviderProfile,
   getAllProviders,
-  findNearbyProviders 
+  findNearbyProviders,
+  getProviderEarningsStats 
 } from "../api/provider.thunk";
 
 const initialState = {
   profile: null,
   providers: [],
   nearbyProviders: [],
+  earnings: null,
   loading: false,
   error: null,
 };
@@ -90,6 +92,19 @@ const providerSlice = createSlice({
         state.nearbyProviders = action.payload;
       })
       .addCase(findNearbyProviders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // ✅ NEW: Get Provider Earnings Stats
+      .addCase(getProviderEarningsStats.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProviderEarningsStats.fulfilled, (state, action) => {
+        state.loading = false;
+        state.earnings = action.payload;
+      })
+      .addCase(getProviderEarningsStats.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

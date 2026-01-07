@@ -92,3 +92,22 @@ export const findNearbyProviders = createAsyncThunk(
     }
   }
 );
+
+// ✅ NEW: Get Provider Earnings Stats
+export const getProviderEarningsStats = createAsyncThunk(
+  "provider/getEarnings",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+      const { data } = await api.get("/v1/provider/earnings");
+      return data.earnings;
+    } catch (error) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to fetch provider earnings"
+      );
+    }
+  }
+);

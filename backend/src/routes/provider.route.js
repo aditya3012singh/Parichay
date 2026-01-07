@@ -4,6 +4,7 @@ import {
   getProfileController,
   saveProfileController,
   getAllProvidersController,
+  getEarningsStatsController,
 } from "../controllers/provider.controller.js";
 
 const router = express.Router();
@@ -13,6 +14,9 @@ router.get("/", authMiddleware, getProfileController);
 
 // Create/Update provider profile
 router.post("/", authMiddleware, saveProfileController);
+
+// ✅ NEW: Get provider earnings dashboard
+router.get("/earnings", authMiddleware, getEarningsStatsController);
 
 // Get all providers
 router.get("/all", getAllProvidersController);

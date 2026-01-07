@@ -1,14 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { 
   createBooking, 
-  getMyBookings, 
-  getMyJobs, 
+  getMyBookings,
+  getMyBookingsByStatus,
+  getMyJobs,
+  getMyJobsByStatus,
+  getProviderEarnings,
   updateBookingStatus 
 } from "../api/booking.thunk";
 
 const initialState = {
   bookings: [],
+  bookingsByStatus: [],
   jobs: [],
+  jobsByStatus: [],
+  earnings: null,
   currentBooking: null,
   loading: false,
   error: null,
@@ -54,6 +60,19 @@ const bookingSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      // ✅ NEW: Get My Bookings by Status
+      .addCase(getMyBookingsByStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getMyBookingsByStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.bookingsByStatus = action.payload;
+      })
+      .addCase(getMyBookingsByStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       // Get My Jobs (for providers)
       .addCase(getMyJobs.pending, (state) => {
         state.loading = true;
@@ -64,6 +83,32 @@ const bookingSlice = createSlice({
         state.jobs = action.payload;
       })
       .addCase(getMyJobs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // ✅ NEW: Get My Jobs by Status
+      .addCase(getMyJobsByStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getMyJobsByStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.jobsByStatus = action.payload;
+      })
+      .addCase(getMyJobsByStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // ✅ NEW: Get Provider Earnings
+      .addCase(getProviderEarnings.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProviderEarnings.fulfilled, (state, action) => {
+        state.loading = false;
+        state.earnings = action.payload;
+      })
+      .addCase(getProviderEarnings.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
