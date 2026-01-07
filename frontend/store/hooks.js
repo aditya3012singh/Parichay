@@ -29,3 +29,66 @@ export const useUnreadCount = () => useAppSelector((state) => state.notification
 
 // Category Selectors
 export const useCategories = () => useAppSelector((state) => state.category.categories);
+
+// Review Selectors
+export const useReviews = () => useAppSelector((state) => state.review.reviews);
+export const useProviderReviews = () => useAppSelector((state) => state.review.providerReviews);
+export const useMyReviews = () => useAppSelector((state) => state.review.myReviews);
+
+// Message Selectors
+export const useMessages = () => useAppSelector((state) => state.message.conversations);
+export const useCurrentConversation = () => useAppSelector((state) => state.message.currentConversation);
+export const useAllConversations = () => useAppSelector((state) => state.message.allConversations);
+
+// Availability Selectors
+export const useAvailabilitySlots = () => useAppSelector((state) => state.availability.slots);
+export const useProviderSlots = () => useAppSelector((state) => state.availability.providerSlots);
+
+// Coupon Selectors
+export const useCoupons = () => useAppSelector((state) => state.coupon.coupons);
+export const useCouponValidation = () => useAppSelector((state) => state.coupon.validationResult);
+
+// File Selectors
+export const useUserFiles = () => useAppSelector((state) => state.file.userFiles);
+export const useUploadedFile = () => useAppSelector((state) => state.file.uploadedFile);
+
+// Match Selectors
+export const useNearbyMatchProviders = () => useAppSelector((state) => state.match.nearbyProviders);
+export const useSearchResults = () => useAppSelector((state) => state.match.searchResults);
+export const useProviderDetails = () => useAppSelector((state) => state.match.providerDetails);
+
+// Global Loading Selector
+export const useLoading = () => useAppSelector((state) => {
+  return {
+    auth: state.auth.loading,
+    booking: state.booking.loading,
+    provider: state.provider.loading,
+    wallet: state.wallet.loading,
+    notification: state.notification.loading,
+    category: state.category.loading,
+    review: state.review.loading,
+    message: state.message.loading,
+    availability: state.availability.loading,
+    coupon: state.coupon.loading,
+    file: state.file.loading,
+    match: state.match.loading,
+  };
+});
+
+// Global Error Selector
+export const useError = () => useAppSelector((state) => {
+  return {
+    auth: state.auth.error,
+    booking: state.booking.error,
+    provider: state.provider.error,
+    wallet: state.wallet.error,
+    notification: state.notification.error,
+    category: state.category.error,
+    review: state.review.error,
+    message: state.message.error,
+    availability: state.availability.error,
+    coupon: state.coupon.error,
+    file: state.file.error,
+    match: state.match.error,
+  };
+});
