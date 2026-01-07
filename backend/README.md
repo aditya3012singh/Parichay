@@ -1,65 +1,77 @@
-# Parichay Backend API
+# 🚀 Parichay Backend - Complete Documentation
 
-A comprehensive service marketplace API built with Node.js, Express, and Prisma. This backend powers the Parichay platform, connecting service providers with customers in an urban setting.
+## 📊 System Overview
 
-## 📋 Table of Contents
-
-- [Project Overview](#project-overview)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Database Schema](#database-schema)
-- [API Routes](#api-routes)
-- [Installation & Setup](#installation--setup)
-- [Environment Variables](#environment-variables)
-- [Running the Application](#running-the-application)
+**Current Grade:** 70/100 → Target: 95/100  
+**Architecture:** 3-layer (Services → Controllers → Routes)  
+**Database:** PostgreSQL + Prisma ORM  
+**Real-time:** Socket.io + Redis
 
 ---
 
-## 🎯 Project Overview
+## ✅ What's Working (12 Services)
 
-**Parichay** is an urban service marketplace platform that facilitates connections between service providers and customers. The backend provides a robust REST API with real-time messaging capabilities via Socket.io.
-
-### Key Features:
-- User authentication with OTP verification
-- Provider profile management with geolocation
-- Booking/Job management system
-- Wallet and payment transactions
-- Service categories and coupons
-- Real-time messaging between users
-- Review and rating system
-- Notification system
-- Real-time matching based on location
+✅ 12 Services (auth, booking, provider, wallet, review, message, notification, availability, category, coupon, file, match)  
+✅ 12 Controllers (all functional)  
+✅ 12 Routes (.route.js pattern)  
+✅ Authentication (JWT + OTP via email)  
+✅ Error handler (Zod, JWT, Prisma errors)  
+✅ Socket.io provider matching  
+✅ Wallet & transactions  
+✅ Reviews & ratings  
 
 ---
 
-## 🛠️ Tech Stack
+## ⚠️ 15 Issues Found - Consolidated List
 
-### Core Framework
-- **Express.js** (v5.1.0) - Web framework
-- **Node.js** - Runtime environment
+### 🔴 CRITICAL (2.5 hours)
+1. **No Input Validation** - All 12 controllers need Zod validation
+2. **No Rate Limiting** - DDoS vulnerability
+3. **No Request Size Limits** - Large payload vulnerability
+4. ✅ **Socket Handler Fixed** - Provider matching works
 
-### Database & ORM
-- **PostgreSQL** - Primary database
-- **Prisma** (v6.11.1) - ORM for database management
+### 🟠 HIGH (2.5 hours)
+5. **No Pagination** - Endpoints return all records
+6. **No Search Filters** - Can't find providers by category/rating
+7. **Missing Refund Logic** - No refunds on cancellation
+8. **No Request Logging** - Can't debug production
 
-### Authentication & Security
-- **JWT (jsonwebtoken)** - Token-based authentication
-- **bcryptjs** - Password hashing
-- **dotenv** - Environment variable management
+### 🟡 MEDIUM (2.5 hours)
+9. **No API Documentation** - Missing Swagger docs
+10. **No Transaction Handling** - Data corruption risk
+11. **Booking Lifecycle Not Enforced** - Invalid transitions allowed
+12. **No Caching Headers** - Wasted bandwidth
 
-### Real-time Communication
-- **Socket.io** (v4.8.1) - WebSocket library for real-time features
-- **Socket.io-client** (v4.8.1) - Client-side WebSocket
+### 🟢 LOW (1.5 hours)
+13. **No Password Reset** - Can't recover accounts
+14. **Multiple Provider Profiles** - Users create duplicates
+15. **Missing Response Data** - Requires extra API calls
 
-### Additional Services
-- **Redis (ioredis)** - In-memory cache for OTP storage
-- **Multer** (v2.0.1) - File upload handling
-- **CORS** - Cross-origin resource sharing
-- **Twilio** - SMS/calling services
-- **UUID** - Unique identifier generation
+---
 
-### Development
-- **Nodemon** - Auto-reload during development
+## 🔧 Quick Setup
+
+### 1. Install & Configure
+```bash
+npm install
+cp .env.example .env  # Edit with your credentials
+```
+
+### 2. Required Environment Variables
+```env
+DATABASE_URL="postgresql://user:pass@localhost:5432/parichay"
+REDIS_URL="redis://localhost:6379"
+JWT_SECRET="your-secret-key"
+EMAIL_USER="your-email@gmail.com"
+EMAIL_PASS="app-password"
+FRONTEND_URL="http://localhost:3000"
+```
+
+### 3. Start Server
+```bash
+npm run dev   # Development
+npm start     # Production
+```
 
 ---
 
@@ -68,604 +80,149 @@ A comprehensive service marketplace API built with Node.js, Express, and Prisma.
 ```
 backend/
 ├── src/
-│   ├── index.js                 # Main server entry point
-│   ├── controllers/
-│   │   └── geoHelpers.js        # Geographic distance calculations
+│   ├── controllers/      (12 files) *.controller.js
+│   ├── services/        (12 files) *.service.js
+│   ├── routes/          (12 files) *.route.js
 │   ├── middlewares/
-│   │   ├── authMiddleware.js    # JWT authentication middleware
-│   │   ├── isAdmin.js           # Admin role verification
-│   │   └── s3upload.js          # S3 file upload middleware
-│   ├── routes/                  # API route handlers
-│   │   ├── user.js              # Authentication & user management
-│   │   ├── providerProfile.js   # Provider profile management
-│   │   ├── availabilitySlot.js  # Provider availability slots
-│   │   ├── booking.js           # Booking management
-│   │   ├── wallet.js            # Wallet & transactions
-│   │   ├── categoryService.js   # Service categories
-│   │   ├── coupon.js            # Coupon management
-│   │   ├── reviews.js           # Reviews & ratings
-│   │   ├── messages.js          # Direct messaging
-│   │   ├── notification.js      # User notifications
-│   │   ├── match.js             # Geographic matching
-│   │   └── files.js             # File uploads
+│   │   ├── authMiddleware.js
+│   │   ├── isAdmin.js
+│   │   ├── errorHandler.js ✅ NEW
 │   ├── socket/
-│   │   └── matchHandler.js      # Real-time matching via Socket.io
-│   └── validators/
-│       └── ValidateUser.js      # Input validation schemas
+│   │   └── matchHandler.js ✅ FIXED
+│   ├── validators/      ValidateUser.js
+│   └── index.js
 ├── prisma/
-│   ├── schema.prisma            # Database schema
-│   ├── seed.js                  # Database seeding script
-│   └── migrations/              # Database migrations
-├── uploads/                     # Local file storage
-├── package.json
-└── README.md
+│   ├── schema.prisma    (12 models)
+│   └── migrations/
+├── .env                 ✅ NEW
+└── uploads/             ✅ Auto-created
 ```
 
 ---
 
-## 🗄️ Database Schema
+## 🔌 12 API Routes
 
-### Core Models
-
-#### **User**
-- Represents all system users (USER, PROVIDER, ADMIN roles)
-- Stores authentication credentials and profile information
-- Relations: Bookings, Wallet, Provider Profile, Reviews, Messages, Notifications, Files
-
-#### **ProviderProfile**
-- Extended profile for service providers
-- Includes: categories, skills, hourly rate, location coordinates
-- Uses geolocation indexing for efficient distance queries
-
-#### **Booking**
-- Records service requests between users and providers
-- Status: PENDING → ACCEPTED → COMPLETED/CANCELLED
-- Stores service details, pricing, and scheduling info
-
-#### **Wallet**
-- Stores user's account balance
-- Used for payments and transactions
-
-#### **WalletTransaction**
-- Detailed transaction history
-- Types: CREDIT, DEBIT
-- Sources: TOPUP, REFUND, BOOKING
-
-#### **ServiceCategory**
-- Available service categories (e.g., plumbing, cleaning, etc.)
-- Can be managed by admins
-
-#### **Review**
-- User reviews for providers
-- Includes rating (1-5) and comments
-
-#### **Notification**
-- System notifications for users
-- Types: BOOKING, WALLET, ADMIN
-- Track read/unread status
-
-#### **Message**
-- Direct messages between users
-- Tracks sender, receiver, timestamp
-
-#### **AvailabilitySlot**
-- Provider availability windows
-- Time-based scheduling
-
-#### **Coupon**
-- Discount codes with expiration
-- Tracks active/inactive status
-
-#### **File**
-- Document storage (profile pics, ID proofs, certificates)
-- File types: PROFILE, ID_PROOF, CERTIFICATE, OTHER
-
-#### **OTP**
-- One-time passwords for email verification
-- Stored with expiration times
+| Service | Endpoints |
+|---------|-----------|
+| **Auth** | generate-otp, verify-otp, signup, signin, me, update-profile |
+| **Booking** | create, my-bookings, my-jobs, update-status |
+| **Provider** | profile (GET/POST/PUT), all, nearby |
+| **Wallet** | balance, transactions, topup |
+| **Reviews** | create, get, get-average |
+| **Messages** | get-conversation, send |
+| **Notifications** | get, mark-as-read |
+| **Categories** | get, create |
+| **Coupons** | get, create |
+| **Files** | upload, get-by-user |
+| **Availability** | create, get, delete |
+| **Match** | find-nearby (WebSocket) |
 
 ---
 
-## 🛣️ API Routes
+## 🗄️ 12 Database Models
 
-### Base URL
-```
-http://localhost:8000/api/v1
-```
+User • ProviderProfile • Booking • Wallet • WalletTransaction • ServiceCategory • Review • Notification • Message • File • AvailabilitySlot • Coupon
 
 ---
 
-### 👤 User Routes (`/api/v1/user`)
+## 🛠️ Tech Stack
 
-#### Authentication & User Management
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/generate-otp` | Generate OTP for email verification | ❌ |
-| POST | `/verify-otp` | Verify OTP code | ❌ |
-| POST | `/signup` | Register new user (USER, PROVIDER, or ADMIN) | ❌ |
-| POST | `/signin` | Login user and receive JWT token | ❌ |
-| GET | `/check-admin` | Check if admin exists | ❌ |
-| GET | `/check-user` | Check if user exists by email | ❌ |
-| GET | `/me` | Get current logged-in user's profile | ✅ |
-| GET | `/users` | Get all users (admin only) | ✅ (Admin) |
-| PUT | `/update-profile` | Update user name or password | ✅ |
-| DELETE | `/user` | Delete user by ID (admin only) | ✅ (Admin) |
-
-#### Request Examples:
-
-**Generate OTP:**
-```json
-{
-  "email": "user@example.com"
-}
-```
-
-**Verify OTP:**
-```json
-{
-  "email": "user@example.com",
-  "code": "123456"
-}
-```
-
-**Signup:**
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "phone": "+1234567890",
-  "password": "securePassword123",
-  "role": "USER"  // USER, PROVIDER, or ADMIN
-}
-```
-
-**Signin:**
-```json
-{
-  "email": "john@example.com",
-  "password": "securePassword123"
-}
-```
+| Component | Technology |
+|-----------|------------|
+| Runtime | Node.js |
+| Framework | Express.js 5.1.0 |
+| Database | PostgreSQL + Prisma 6.11.1 |
+| Cache | Redis (ioredis) |
+| Auth | JWT + bcryptjs |
+| Real-time | Socket.io 4.8.1 |
+| Validation | Zod |
+| Files | Multer 2.0.1 |
+| Email | Nodemailer 7.0.12 |
 
 ---
 
-### 🏢 Provider Profile Routes (`/api/v1/provider-profile`)
+## 📊 Current Status Dashboard
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/` | Get current provider's profile | ✅ |
-| POST | `/` | Create/Update provider profile | ✅ |
-| GET | `/all` | Get all provider profiles | ❌ |
-
-#### Request Example:
-
-```json
-{
-  "categories": ["cleaning", "plumbing"],
-  "skills": ["10 years experience"],
-  "rate": 500,
-  "availability": true,
-  "description": "Professional service provider",
-  "address": "123 Main St",
-  "latitude": 40.7128,
-  "longitude": -74.0060
-}
-```
+| Area | Grade | Status | Action |
+|------|-------|--------|--------|
+| Architecture | 95/100 | ✅ Excellent | - |
+| Database | 95/100 | ✅ Excellent | - |
+| Authentication | 90/100 | ✅ Good | - |
+| Error Handling | 90/100 | ✅ Good | - |
+| **Security** | **40/100** | ❌ Critical | See IMPLEMENTATION_GUIDE.md |
+| **Performance** | **50/100** | ⚠️ Poor | Needs pagination |
+| **Documentation** | **0/100** | ❌ Missing | Needs Swagger |
 
 ---
 
-### 📅 Availability Slot Routes (`/api/v1/availability`)
+## 🎯 Next Steps - See IMPLEMENTATION_GUIDE.md
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/` | Create availability slot | ✅ (Provider) |
-| GET | `/` | Get all slots for current provider | ✅ (Provider) |
-| DELETE | `/:slotId` | Delete a slot | ✅ (Provider) |
+**Phase 1 (Critical):** Validation + Rate Limiting + Size Limits (2.5h)  
+**Phase 2 (High):** Pagination + Filters + Logging (2.5h)  
+**Phase 3 (Medium):** Swagger + Transactions + Refunds (2.5h)  
+**Phase 4 (Low):** Password Reset + Socket Improvements (1.5h)  
 
-#### Request Example:
-
-```json
-{
-  "startTime": "2024-01-10T09:00:00Z",
-  "endTime": "2024-01-10T17:00:00Z"
-}
-```
+**Total Time to 95/100:** ~10 hours
 
 ---
 
-### 📦 Booking Routes (`/api/v1/booking`)
+## 🔐 Security Checklist
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/` | Create new booking | ✅ |
-| GET | `/my-bookings` | Get user's bookings | ✅ |
-| GET | `/my-jobs` | Get provider's jobs/bookings | ✅ |
-| PUT | `/:bookingId/status` | Update booking status | ✅ |
-
-#### Request Example:
-
-```json
-{
-  "providerId": "provider-uuid",
-  "category": "cleaning",
-  "dateTime": "2024-01-15T10:00:00Z",
-  "location": "456 Oak St",
-  "price": 1500,
-  "notes": "2BHK apartment cleaning"
-}
-```
-
-#### Booking Status Values:
-- `PENDING` - Awaiting provider response
-- `ACCEPTED` - Provider accepted
-- `COMPLETED` - Service completed
-- `CANCELLED` - Booking cancelled
+- ✅ JWT Authentication
+- ✅ Password Hashing (bcrypt)
+- ✅ Error Handling
+- ✅ CORS configured
+- ❌ Input Validation - **MISSING**
+- ❌ Rate Limiting - **MISSING**
+- ❌ Request Size Limits - **MISSING**
 
 ---
 
-### 💳 Wallet Routes (`/api/v1/wallet`)
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/` | Get current wallet balance | ✅ |
-| GET | `/transactions` | View transaction history | ✅ |
-| POST | `/topup` | Top up wallet balance | ✅ |
-
-#### Request Example:
-
-```json
-{
-  "amount": 5000
-}
-```
-
----
-
-### 🏷️ Category Routes (`/api/v1/categories`)
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/` | Get all service categories | ❌ |
-| POST | `/` | Create new category (admin only) | ✅ (Admin) |
-
-#### Request Example:
-
-```json
-{
-  "name": "Plumbing",
-  "image": "https://example.com/plumbing.jpg"
-}
-```
-
----
-
-### 🎟️ Coupon Routes (`/api/v1/coupons`)
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/` | Get all active coupons | ✅ |
-| POST | `/` | Create coupon (admin only) | ✅ (Admin) |
-
-#### Request Example:
-
-```json
-{
-  "code": "SAVE20",
-  "discount": 20,
-  "maxAmount": 5000,
-  "expiryDate": "2024-12-31T23:59:59Z"
-}
-```
-
----
-
-### ⭐ Review Routes (`/api/v1/reviews`)
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/` | Submit a review | ✅ |
-| GET | `/provider/:providerId` | Get reviews for a provider | ❌ |
-| GET | `/provider/:providerId/average` | Get provider's average rating | ❌ |
-
-#### Request Example:
-
-```json
-{
-  "providerId": "provider-uuid",
-  "rating": 5,
-  "comment": "Excellent service!"
-}
-```
-
----
-
-### 💬 Message Routes (`/api/v1/messages`)
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/:receiverId` | Get conversation with user | ✅ |
-| POST | `/` | Send a message | ✅ |
-
-#### Request Example:
-
-```json
-{
-  "receiverId": "user-uuid",
-  "content": "Is your service available tomorrow?"
-}
-```
-
----
-
-### 🔔 Notification Routes (`/api/v1/notifications`)
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/` | Get all notifications | ✅ |
-| PUT | `/:id/read` | Mark notification as read | ✅ |
-
----
-
-### 📄 File Routes (`/api/v1/files`)
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/upload` | Upload a file | ✅ |
-| GET | `/user/:userId` | Get user's uploaded files | ❌ |
-
-#### File Types:
-- `PROFILE` - Profile pictures
-- `ID_PROOF` - Identity documents
-- `CERTIFICATE` - Professional certificates
-- `OTHER` - Other documents
-
----
-
-### 🎯 Match Routes (`/api/v1/match`)
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/nearby` | Find nearby available providers | ✅ |
-
-#### Request Example:
-
-```json
-{
-  "latitude": 40.7128,
-  "longitude": -74.0060,
-  "radiusKm": 10
-}
-```
-
----
-
-## 🔐 Authentication
-
-The API uses **JWT (JSON Web Tokens)** for authentication.
-
-### Token Format:
-```
-Authorization: Bearer <jwt_token>
-```
-
-### Token Payload:
-```json
-{
-  "id": "user-uuid",
-  "role": "USER|PROVIDER|ADMIN"
-}
-```
-
-### Token Expiration:
-- Default: 1 hour
-
----
-
-## 📦 Installation & Setup
-
-### Prerequisites
-- Node.js (v14+)
-- PostgreSQL (v12+)
-- Redis (for OTP caching)
-
-### Installation Steps
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd backend
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Setup environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
-
-4. **Setup PostgreSQL database**
-   ```bash
-   npx prisma migrate dev
-   ```
-
-5. **Seed database (optional)**
-   ```bash
-   node prisma/seed.js
-   ```
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# Server
-PORT=8000
-NODE_ENV=development
-
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/parichay
-
-# Redis (for OTP)
-REDIS_URL=redis://localhost:6379
-
-# JWT
-JWT_SECRET=your_jwt_secret_key_here
-
-# Email (Gmail with App Password)
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_app_password
-
-# Twilio (optional)
-TWILIO_ACCOUNT_SID=your_twilio_sid
-TWILIO_AUTH_TOKEN=your_twilio_token
-TWILIO_PHONE_NUMBER=+1234567890
-
-# S3 (optional)
-AWS_ACCESS_KEY_ID=your_aws_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret
-AWS_BUCKET_NAME=your_bucket_name
-AWS_REGION=us-east-1
-```
-
----
-
-## ▶️ Running the Application
-
-### Development Mode (with auto-reload)
-```bash
-npm run dev
-```
-
-### Production Mode
-```bash
-node src/index.js
-```
-
-### Health Check
-The API runs on `http://localhost:8000` and returns:
-```
-GET http://localhost:8000/
-Response: ✅ UrbanCo-style API running
-```
-
----
-
-## 🔄 Real-time Features (Socket.io)
-
-The backend supports real-time communication through Socket.io:
-
-### Match Handler (`/socket/matchHandler.js`)
-- Manages real-time provider matching
-- Handles location-based notifications
-- Coordinates booking updates
-
-### Connection Events:
-```javascript
-// Client connects
-socket.on('connect', () => { /* ... */ });
-
-// Listen for real-time updates
-socket.on('providerMatched', (data) => { /* ... */ });
-socket.on('bookingUpdated', (data) => { /* ... */ });
-```
-
----
-
-## 📝 API Response Format
-
-### Success Response
-```json
-{
-  "message": "Operation successful",
-  "data": { /* ... */ }
-}
-```
-
-### Error Response
-```json
-{
-  "message": "Error description",
-  "errors": [ /* validation errors */ ]
-}
-```
-
-### Status Codes:
-- `200` - OK
-- `201` - Created
-- `400` - Bad Request
-- `401` - Unauthorized
-- `403` - Forbidden
-- `404` - Not Found
-- `409` - Conflict
-- `500` - Internal Server Error
-
----
-
-## 🧪 Testing
-
-Currently, no automated tests are configured. To add tests:
+## 🚀 Quick Commands
 
 ```bash
-npm install --save-dev jest supertest
+npm run dev             # Start development
+npm start              # Start production
+npx prisma studio     # View database GUI
+npx prisma migrate dev # Run migrations
+npx prisma db seed    # Seed database
 ```
 
 ---
 
-## 🚀 Deployment
+## 📞 Testing Endpoints
 
-### Deploying to Production
+```bash
+# Generate OTP
+curl -X POST http://localhost:8080/api/v1/auth/generate-otp \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com"}'
 
-1. **Set environment variables** on your hosting platform
-2. **Run migrations**:
-   ```bash
-   npx prisma migrate deploy
-   ```
-3. **Start server**:
-   ```bash
-   npm start
-   ```
-
-### Recommended Hosting:
-- Heroku
-- Railway
-- DigitalOcean
-- AWS EC2
-- Render
+# Get current user (requires token)
+curl -X GET http://localhost:8080/api/v1/auth/me \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
 
 ---
 
-## 📚 Additional Resources
+## ⚙️ Troubleshooting
 
-- [Express.js Documentation](https://expressjs.com/)
-- [Prisma Documentation](https://www.prisma.io/docs/)
-- [Socket.io Documentation](https://socket.io/docs/)
-- [JWT Documentation](https://jwt.io/)
-
----
-
-## 📄 License
-
-ISC
+| Issue | Solution |
+|-------|----------|
+| Port already in use | `lsof -i :8080 && kill -9 <PID>` |
+| Redis connection error | Check: `redis-cli ping` |
+| Database connection error | Verify DATABASE_URL, run `npx prisma db push` |
+| OTP not sending | Check EMAIL_USER/EMAIL_PASS, use app password for Gmail |
 
 ---
 
-## 👥 Contributors
+## 📚 Documentation Files
 
-- Aditya Singh (@aditya3012singh)
-
----
-
-## 🤝 Support
-
-For issues or questions, please open a GitHub issue or contact the development team.
+- **README.md** (this file) - Overview & status
+- **IMPLEMENTATION_GUIDE.md** - Fixes with code examples
 
 ---
 
-**Last Updated**: January 2026
+**Last Updated:** January 7, 2026  
+**Repository:** aditya3012singh/Parichay  
+**Maintainer:** Aditya Singh
